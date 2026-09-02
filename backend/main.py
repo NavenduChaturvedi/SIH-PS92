@@ -28,7 +28,7 @@ except ModuleNotFoundError:
 
 cors_origins = normalize_cors_origins(os.getenv(
     "CORS_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173,https://sih-2026-26092-t2.vercel.app"
+    "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5175,http://127.0.0.1:5175,http://localhost:5177,http://127.0.0.1:5177,https://sih-2026-26092-t2.vercel.app"
 ))
 
 # Create tables in the database
