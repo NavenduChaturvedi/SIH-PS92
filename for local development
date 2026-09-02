@@ -1,0 +1,13 @@
+[1mdiff --git a/backend/main.py b/backend/main.py[m
+[1mindex 6b78d48..e285386 100644[m
+[1m--- a/backend/main.py[m
+[1m+++ b/backend/main.py[m
+[36m@@ -28,7 +28,7 @@[m [mexcept ModuleNotFoundError:[m
+ [m
+ cors_origins = normalize_cors_origins(os.getenv([m
+     "CORS_ORIGINS",[m
+[31m-    "http://localhost:5173,http://127.0.0.1:5173,https://sih-2026-26092-t2.vercel.app"[m
+[32m+[m[32m    "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5175,http://127.0.0.1:5175,http://localhost:5177,http://127.0.0.1:5177,https://sih-2026-26092-t2.vercel.app"[m
+ ))[m
+ [m
+ # Create tables in the database[m
