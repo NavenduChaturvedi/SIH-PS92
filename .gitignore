@@ -13,10 +13,6 @@ __pycache__/
 # Specific unwanted text files
 problem.md
 ppt.txt
-tatus_code).txt
-tapi, sqlalchemy, geoalchemy2, pydantic
-and rupees for my shop, my salary is 35000.'
-ervices.nlp import parse_vernacular_intent
 
 # Keep required files like requirements.txt
 !requirements.txt
