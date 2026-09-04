@@ -6,6 +6,11 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from urllib.request import Request, urlopen
 
+try:
+    from services.gemini import translate_with_gemini
+except ModuleNotFoundError:
+    from .gemini import translate_with_gemini
+
 SUPPORTED_TRANSLATION_LANGUAGES = {
     "en", "as", "bn", "doi", "gu", "hi", "kn", "kok", "mai", "ml",
     "mr", "ne", "or", "pa", "sa", "sat", "sd", "ta", "te", "ur"
@@ -44,7 +49,13 @@ def translate_text(text: str, target_language: str = "en", source_language: str 
         except Exception as e:
             print(f"Google Cloud Translation API error: {e}")
 
-    # 2. Use Google's lightweight endpoint before the slower mobile page.
+    # 2. Gemini is a real, supported API (unlike the endpoints below) and a
+    # key is already provisioned for this project, so prefer it over scraping.
+    gemini_translated = translate_with_gemini(text, target_language=target_language, source_language=source_lang)
+    if gemini_translated:
+        return gemini_translated
+
+    # 3. Use Google's lightweight endpoint before the slower mobile page.
     try:
         q = urllib.parse.quote(text)
         url = f"https://translate.googleapis.com/translate_a/single?client=gtx&sl={source_lang}&tl={target_language}&dt=t&q={q}"
@@ -57,7 +68,7 @@ def translate_text(text: str, target_language: str = "en", source_language: str 
     except Exception as e:
         print(f"Google Translate endpoint error: {e}")
 
-    # 3. Mobile page fallback for environments where the lightweight endpoint
+    # 4. Mobile page fallback for environments where the lightweight endpoint
     # is unavailable.
     try:
         q = urllib.parse.quote(text)
