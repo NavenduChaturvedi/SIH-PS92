@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 try:
     import models
-    from database import engine, get_db
+    from database import engine, get_db, SessionLocal
     from schemas import LoanApplicationRequest, FinancialSimulationResult, FullApplicationResponse, RawVoiceRequest, ApplyRequest, TranslationRequest, TranslationResponse
     from services.simulator import simulate_loan_terms
     from services.router import find_optimal_partners
@@ -15,9 +15,10 @@ try:
     from services.scheme_catalogue import SCHEME_CATALOGUE, get_scheme
     from migrate import migrate
     from cors_utils import normalize_cors_origins
+    from seed_db import seed_data
 except ModuleNotFoundError:
     from . import models
-    from .database import engine, get_db
+    from .database import engine, get_db, SessionLocal
     from .schemas import LoanApplicationRequest, FinancialSimulationResult, FullApplicationResponse, RawVoiceRequest, ApplyRequest, TranslationRequest, TranslationResponse
     from .services.simulator import simulate_loan_terms
     from .services.router import find_optimal_partners
@@ -27,6 +28,7 @@ except ModuleNotFoundError:
     from .services.scheme_catalogue import SCHEME_CATALOGUE, get_scheme
     from .migrate import migrate
     from .cors_utils import normalize_cors_origins
+    from .seed_db import seed_data
 
 cors_origins = normalize_cors_origins(os.getenv(
     "CORS_ORIGINS",
@@ -36,6 +38,14 @@ cors_origins = normalize_cors_origins(os.getenv(
 # Create tables in the database
 models.Base.metadata.create_all(bind=engine)
 migrate()
+
+# Render's free tier has no persistent disk and no build/start hook that runs
+# seed_db.py, so without this the channel_partners table is silently empty on
+# every deploy/restart. Only seed when empty so this never clobbers real data
+# on an environment that does have a persistent Postgres database.
+with SessionLocal() as _db:
+    if _db.query(models.ChannelPartner).count() == 0:
+        seed_data()
 
 app = FastAPI(title="SIH Health-Aware Router API")
 
