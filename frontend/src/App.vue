@@ -23,7 +23,7 @@ const initialDemoTexts = [
 
 const defaultTexts = {
   brandSubtitle: 'Intelligent concessional scheme matcher',
-  location: 'Assam',
+  location: 'India',
   eyebrowWorkspace: 'Financial assistance workspace',
   headingMain1: 'Good afternoon.',
   headingMain2: "Let's make your plan possible.",
@@ -113,7 +113,7 @@ const activeTab = ref('text')
 const selectedLanguage = ref(languages[0])
 const uiTexts = computed(() => getStaticTexts(selectedLanguage.value.code, defaultTexts))
 const demoTexts = computed(() => getStaticDemos(selectedLanguage.value.code, initialDemoTexts))
-const userLocation = ref({ latitude: 26.144, longitude: 91.736, label: 'Demo location: Guwahati, Assam' })
+const userLocation = ref({ latitude: 22.9734, longitude: 78.6569, label: 'Default location — use your location for accurate results' })
 const locating = ref(false)
 const greetings = {
   en: ['Good night.', 'Good morning.', 'Good afternoon.', 'Good evening.'],
