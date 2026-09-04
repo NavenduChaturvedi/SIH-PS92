@@ -10,7 +10,16 @@ except ModuleNotFoundError:
     from .. import models
     from ..schemas import LoanApplicationRequest
 
-def find_optimal_partners(db: Session, request: LoanApplicationRequest, radius_km: float = 25.0):
+# Channel partners are now real State Channelizing Agencies (one per
+# state/UT, headquartered in the state capital — see seed_db.py), not a dense
+# local branch network, so a tight urban radius would only ever match
+# applicants literally inside a capital city. 300km comfortably covers most
+# states end-to-end. This is still a simplification: in reality an applicant
+# is routed to their own state's SCA, not simply the nearest one by straight-
+# line distance, which matters near state borders. A future improvement
+# would resolve the applicant's state (e.g. via reverse geocoding) and match
+# on that instead of radius.
+def find_optimal_partners(db: Session, request: LoanApplicationRequest, radius_km: float = 300.0):
     if db.bind.dialect.name == "sqlite":
         def distance_km(location):
             try:

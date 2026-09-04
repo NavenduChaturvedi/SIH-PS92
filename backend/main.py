@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -12,6 +12,7 @@ try:
     from services.nlp import parse_vernacular_intent
     from services.bhashini import translate_to_english
     from services.translation import translate_dict
+    from services.scheme_catalogue import SCHEME_CATALOGUE, get_scheme
     from migrate import migrate
     from cors_utils import normalize_cors_origins
 except ModuleNotFoundError:
@@ -23,6 +24,7 @@ except ModuleNotFoundError:
     from .services.nlp import parse_vernacular_intent
     from .services.bhashini import translate_to_english
     from .services.translation import translate_dict
+    from .services.scheme_catalogue import SCHEME_CATALOGUE, get_scheme
     from .migrate import migrate
     from .cors_utils import normalize_cors_origins
 
@@ -54,6 +56,17 @@ def read_root():
 def get_partners_count(db: Session = Depends(get_db)):
     count = db.query(models.ChannelPartner).count()
     return {"total_registered_partners": count}
+
+@app.get("/schemes")
+def list_schemes():
+    return {"schemes": SCHEME_CATALOGUE}
+
+@app.get("/schemes/{scheme_id}")
+def get_scheme_detail(scheme_id: str):
+    scheme = get_scheme(scheme_id)
+    if scheme is None:
+        raise HTTPException(status_code=404, detail=f"Unknown scheme id '{scheme_id}'.")
+    return scheme
 
 @app.post("/translate", response_model=TranslationResponse)
 def batch_translate(request: TranslationRequest):
