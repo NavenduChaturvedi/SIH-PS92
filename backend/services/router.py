@@ -6,9 +6,11 @@ from sqlalchemy import func
 try:
     import models
     from schemas import LoanApplicationRequest
+    from services.schemes import determine_scheme
 except ModuleNotFoundError:
     from .. import models
     from ..schemas import LoanApplicationRequest
+    from .schemes import determine_scheme
 
 # Channel partners are now real State Channelizing Agencies (one per
 # state/UT, headquartered in the state capital — see seed_db.py), not a dense
@@ -35,7 +37,7 @@ def find_optimal_partners(db: Session, request: LoanApplicationRequest, radius_k
         matches = []
         for partner in db.query(models.ChannelPartner).filter(models.ChannelPartner.is_active == True).all():
             distance = distance_km(partner.location)
-            scheme = "Education Loan" if request.education_status or request.business_type == "Education" else ("Microfinance" if request.capital_required <= 140000 else "Term Loan")
+            scheme = determine_scheme(request.business_type, request.education_status, request.capital_required)
             supported = [item.strip() for item in partner.supported_schemes.split(",") if item.strip()]
             if distance <= radius_km and partner.active_quota >= request.capital_required * 0.90 and partner.npa_ratio < 5.0 and partner.overdue_ratio < 5.0 and scheme in supported:
                 matches.append((partner, distance, supported))
@@ -48,7 +50,7 @@ def find_optimal_partners(db: Session, request: LoanApplicationRequest, radius_k
     # Calculate a simple health score: (Active Quota / (NPA Ratio + 1))
     # Higher active quota and lower NPA yields a better score
     health_score = models.ChannelPartner.active_quota / (models.ChannelPartner.npa_ratio + models.ChannelPartner.overdue_ratio + 1)
-    requested_scheme = "Education Loan" if request.education_status or request.business_type == "Education" else ("Microfinance" if request.capital_required <= 140000 else "Term Loan")
+    requested_scheme = determine_scheme(request.business_type, request.education_status, request.capital_required)
     
     # Query for active partners within the radius (in meters), ordered by health score then distance
     optimal_partners = db.query(

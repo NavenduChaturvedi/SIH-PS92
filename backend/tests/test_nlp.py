@@ -15,3 +15,10 @@ def test_parses_hindi_digits_and_intent():
     assert parsed.business_type == "Tailoring"
     assert parsed.capital_required == 100000
     assert parsed.annual_income == 200000
+
+
+def test_parses_green_business_request():
+    parsed = parse_vernacular_intent(
+        "I need 5 lakh for a solar e-rickshaw business. My annual income is 300000 rupees.", 26.1, 91.7
+    )
+    assert parsed.business_type == "Green"

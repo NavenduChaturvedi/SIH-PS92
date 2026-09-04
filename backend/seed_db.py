@@ -70,7 +70,7 @@ def seed_data():
         ChannelPartner(
             name=name,
             partner_type="SCA",
-            supported_schemes="Microfinance,Term Loan,Education Loan",
+            supported_schemes="Microfinance,Term Loan,Education Loan,Green Business",
             is_active=True,
             # Note: PostGIS expects Longitude first, then Latitude
             location=f"SRID=4326;POINT({longitude} {latitude})",

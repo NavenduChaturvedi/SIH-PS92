@@ -6,9 +6,9 @@ except ModuleNotFoundError:
     from ..schemas import LoanApplicationRequest, FinancialSimulationResult
 
 try:
-    from services.schemes import SCHEMES, INCOME_CEILING, BENEFICIARY_CONTRIBUTION
+    from services.schemes import SCHEMES, INCOME_CEILING, BENEFICIARY_CONTRIBUTION, determine_scheme, green_business_interest_rate
 except ModuleNotFoundError:
-    from .schemes import SCHEMES, INCOME_CEILING, BENEFICIARY_CONTRIBUTION
+    from .schemes import SCHEMES, INCOME_CEILING, BENEFICIARY_CONTRIBUTION, determine_scheme, green_business_interest_rate
 
 
 def _emi(principal: float, annual_rate: float, months: int) -> float:
@@ -48,12 +48,7 @@ def simulate_loan_terms(request: LoanApplicationRequest) -> FinancialSimulationR
             rejection_reason="Annual income exceeds the ₹5.00 lakh ceiling for SC concessional schemes."
         )
 
-    if request.business_type == "Education" or request.education_status:
-        scheme = "Education Loan"
-    elif request.capital_required <= SCHEMES["Microfinance"]["max_project_cost"]:
-        scheme = "Microfinance"
-    else:
-        scheme = "Term Loan"
+    scheme = determine_scheme(request.business_type, request.education_status, request.capital_required)
 
     policy = SCHEMES[scheme]
     if request.capital_required > policy["max_project_cost"]:
@@ -65,7 +60,8 @@ def simulate_loan_terms(request: LoanApplicationRequest) -> FinancialSimulationR
     loan_amount = request.capital_required * (1 - BENEFICIARY_CONTRIBUTION)
     margin_money = request.capital_required * BENEFICIARY_CONTRIBUTION
     tenure = policy["tenure_months"]
-    emi = _emi(loan_amount, policy["interest_rate"], tenure)
+    interest_rate = green_business_interest_rate(request.capital_required) if scheme == "Green Business" else policy["interest_rate"]
+    emi = _emi(loan_amount, interest_rate, tenure)
     reasons = [
         f"Annual family income is within the ₹{INCOME_CEILING:,.0f} eligibility ceiling.",
         f"Project cost fits the ₹{policy['max_project_cost']:,.0f} maximum for this scheme.",
@@ -80,7 +76,7 @@ def simulate_loan_terms(request: LoanApplicationRequest) -> FinancialSimulationR
         total_project_cost=request.capital_required,
         concessional_loan_amount=loan_amount,
         beneficiary_margin_money=margin_money,
-        interest_rate=policy["interest_rate"],
+        interest_rate=interest_rate,
         moratorium_months=policy["moratorium_months"],
         repayment_tenure_months=tenure,
         estimated_emi=round(emi, 2),

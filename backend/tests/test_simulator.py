@@ -38,3 +38,39 @@ def test_education_scheme_has_its_own_terms():
     assert result.is_eligible is True
     assert result.scheme_category == "Education Loan"
     assert result.repayment_tenure_months == 84
+
+
+@pytest.mark.parametrize(
+    ("capital", "expected_rate"),
+    [
+        (500000, 4.0),
+        (1000000, 6.0),
+        (2500000, 7.0),
+    ],
+)
+def test_green_business_scheme_uses_tiered_interest_rate(capital, expected_rate):
+    result = simulate_loan_terms(LoanApplicationRequest(
+        business_type="Green", capital_required=capital, annual_income=300000
+    ))
+    assert result.is_eligible is True
+    assert result.scheme_category == "Green Business"
+    assert result.interest_rate == expected_rate
+
+
+def test_green_business_over_its_ceiling_falls_back_to_term_loan():
+    # Above Green Business Scheme's 30L ceiling but still within Term Loan's
+    # 50L ceiling — falls back to standard Term Loan financing rather than
+    # being rejected outright, since that financing is genuinely available.
+    result = simulate_loan_terms(LoanApplicationRequest(
+        business_type="Green", capital_required=3500000, annual_income=300000
+    ))
+    assert result.is_eligible is True
+    assert result.scheme_category == "Term Loan"
+
+
+def test_green_business_beyond_term_loan_ceiling_is_rejected():
+    result = simulate_loan_terms(LoanApplicationRequest(
+        business_type="Green", capital_required=6000000, annual_income=300000
+    ))
+    assert result.is_eligible is False
+    assert "Term Loan Scheme" in result.rejection_reason
