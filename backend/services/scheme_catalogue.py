@@ -1,0 +1,248 @@
+"""Full official scheme catalogue (NSFDC / NSKFDC / MSME schemes for SC/ST beneficiaries).
+
+This is reference/display data — the richer counterpart to the small
+``SCHEMES`` dict in :mod:`services.schemes`, which only holds the handful of
+fields the auto-matching simulator needs for its simplified Microfinance /
+Term Loan / Education Loan selection. Use this catalogue wherever the full,
+official scheme details (eligibility text, tiered rates, subsidy-only
+schemes, venture-capital terms, etc.) need to be shown or looked up, e.g. via
+the ``/schemes`` API endpoint.
+
+Replace/refresh these values against the latest official NSFDC/NSKFDC/MSME
+circulars before relying on them for anything beyond a prototype demo.
+"""
+
+SCHEME_CATALOGUE = [
+    {
+        "id": "micro_finance",
+        "name": "Micro Finance Scheme (MFS)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "max_project_cost": 140000,
+        "max_loan_amount": 125000,
+        "loan_share_percent": 90,
+        "interest_rate": 6.5,
+        "interest_rate_details": "6.5% p.a. to beneficiary",
+        "repayment_years": 3,
+        "moratorium_months": 3,
+        "channel_type": "SCA/CA",
+        "description": "Micro-credit for small business and income-generating activities with project cost up to ₹1.40 lakh.",
+        "eligible_activities": ["small businesses", "micro enterprises", "self-employment", "income-generating activities"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Annual family income must not exceed ₹5 lakh under current NSFDC norms"],
+        "notes": "Repayment is in quarterly instalments and the 3-month moratorium is included in the 3-year repayment period."
+    },
+    {
+        "id": "term_loan",
+        "name": "Term Loan Scheme",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "min_project_cost": 140001,
+        "max_project_cost": 5000000,
+        "max_loan_amount": 4500000,
+        "loan_share_percent": 90,
+        "interest_rate": 8.0,
+        "interest_rate_details": "8% p.a. to beneficiary under the current simplified NSFDC FAQ; channel/quantum-specific rates may vary under detailed lending policy",
+        "repayment_years": 7,
+        "moratorium_months": 6,
+        "moratorium_override": {"plantation": 12, "construction": 12},
+        "channel_type": "SCA/CA",
+        "description": "Larger income-generating project finance for viable businesses, including agriculture and allied activities, manufacturing, services and transport.",
+        "eligible_activities": ["agriculture and allied activities", "manufacturing", "small industries", "services", "transport", "business expansion", "commercial vehicles"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Annual family income must not exceed ₹5 lakh under current NSFDC norms"],
+        "notes": "Current NSFDC guidance states projects above ₹1.40 lakh and up to ₹50 lakh, with a maximum loan of ₹45 lakh. Repayment is within 7 years including a 6-month moratorium; plantation and construction can have a 12-month moratorium."
+    },
+    {
+        "id": "education_loan",
+        "name": "Educational Loan Scheme (ELS)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "education_loan",
+        "target_beneficiaries": "Eligible SC students",
+        "max_project_cost": None,
+        "max_loan_amount": 4000000,
+        "loan_share_percent": 90,
+        "interest_rate": 6.5,
+        "interest_rate_details": "6.5% p.a. to beneficiary",
+        "repayment_years": 12,
+        "repayment_years_range": [10, 12],
+        "moratorium_months": None,
+        "moratorium_details": "Course period plus 1 year; up to 6 months where the loan has already been disbursed and repayment has started",
+        "channel_type": "SCA/CA",
+        "description": "Financial assistance for regular, full-time professional or technical recognised courses at graduate or higher levels in India or abroad.",
+        "eligible_activities": ["professional education", "technical education", "graduate studies", "higher studies", "recognised courses in India", "recognised courses abroad"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Course must be regular, full-time and recognised", "Annual family income must meet the applicable NSFDC income criterion"],
+        "notes": "Maximum loan is ₹40 lakh or 90% of course fee, whichever is less. Repayment can extend to 10–12 years depending on the disbursement/repayment situation."
+    },
+    {
+        "id": "aajeevika_microfinance",
+        "name": "Aajeevika Micro-Finance Yojana (AMY)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "max_project_cost": 140000,
+        "max_loan_amount": 125000,
+        "loan_share_percent": 90,
+        "interest_rate": 15.0,
+        "interest_rate_details": "15% p.a. to beneficiary",
+        "repayment_years": 3,
+        "moratorium_months": 3,
+        "channel_type": "Selected NBFC-MFIs",
+        "description": "Prompt and need-based micro-finance for small income-generating activities through selected NBFC-MFIs.",
+        "eligible_activities": ["micro enterprises", "small businesses", "income-generating activities"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Annual family income must meet the applicable NSFDC income criterion"],
+        "notes": "Current NSFDC guidance specifies projects up to ₹1.40 lakh, maximum loan of ₹1.25 lakh, 15% beneficiary interest and repayment within 3 years including a 3-month moratorium."
+    },
+    {
+        "id": "udyam_nidhi",
+        "name": "Udyam Nidhi Yojana (UNY)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "max_project_cost": 500000,
+        "max_loan_amount": 450000,
+        "loan_share_percent": 90,
+        "interest_rate": 13.0,
+        "interest_rate_details": "13% p.a. through Cooperative Societies/Cooperative Banks; 15% p.a. through Small Finance Banks",
+        "repayment_years": 5,
+        "moratorium_months": 3,
+        "channel_type": "Co-operative Societies/Co-operative Banks/SFBs",
+        "description": "Loans for small/micro income-generating activities with project cost up to ₹5 lakh.",
+        "eligible_activities": ["small activities", "micro activities", "self-employment", "income-generating activities"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Annual family income must meet the applicable NSFDC income criterion"],
+        "notes": "The current NSFDC FAQ specifies 13% beneficiary interest through Cooperative Societies/Cooperative Banks and 15% through Small Finance Banks."
+    },
+    {
+        "id": "laghu_vyavasay",
+        "name": "Laghu Vyavasay Yojana (LVY)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC) through Channelizing Agencies",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "max_project_cost": 500000,
+        "max_loan_amount": 450000,
+        "loan_share_percent": 90,
+        "interest_rate": 6.0,
+        "interest_rate_details": "6% p.a. to beneficiary",
+        "repayment_years": 6,
+        "moratorium_months": 6,
+        "channel_type": "SCA/CA",
+        "description": "Financial assistance for small/mini business and viable income-generating ventures for SC entrepreneurs, generally for project costs up to ₹5 lakh.",
+        "eligible_activities": ["small business", "mini industrial ventures", "income-generating activities", "self-employment"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Other income and local channel-agency conditions may apply"],
+        "notes": "LVY appears in NSFDC scheme records and state channelising-agency implementations. Current state-level implementations can vary; verify the local SCA's active terms before treating this as an automatically available current scheme."
+    },
+    {
+        "id": "mahila_adhikarita",
+        "name": "Mahila Adhikarita Yojana (MAY)",
+        "implementing_agency": "National Safai Karamcharis Finance and Development Corporation (NSKFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Women Safai Karamcharis, scavenger women and their dependent daughters",
+        "max_project_cost": 200000,
+        "max_loan_amount": 180000,
+        "loan_share_percent": 90,
+        "interest_rate": 7.0,
+        "interest_rate_details": "7% p.a. to beneficiary; 3% p.a. from NSKFDC to SCA",
+        "repayment_years": 5,
+        "moratorium_months": 6,
+        "implementation_period_months": 4,
+        "channel_type": "SCA/RRB/Nationalized Bank",
+        "description": "Loan support for small and petty trade/business and other sundry income-generating activities for eligible women from the NSKFDC target group.",
+        "eligible_activities": ["small trade", "petty business", "sundry income-generating activities"],
+        "eligibility": ["Safai Karamchari or scavenger woman, or eligible dependent daughter", "Project cost up to ₹2 lakh"],
+        "promoter_contribution_percent": 0,
+        "notes": "NSKFDC states that promoter contribution is not insisted upon. Up to 90% of unit cost can come from NSKFDC, with the remaining 10% arranged by the State Channelizing Agency as loan, subsidy or other available funds."
+    },
+    {
+        "id": "green_business",
+        "name": "Green Business Scheme (GBS)",
+        "implementing_agency": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Scheduled Caste (SC) beneficiaries",
+        "max_project_cost": 3000000,
+        "max_loan_amount": 2700000,
+        "loan_share_percent": 90,
+        "interest_rate": None,
+        "interest_rate_details": "Tiered beneficiary rate: 4% up to ₹7.50 lakh project cost; 6% above ₹7.50 lakh to ₹15 lakh; 7% above ₹15 lakh to ₹30 lakh",
+        "interest_rate_tiers": [
+            {"max_project_cost": 750000, "max_loan_amount": 675000, "beneficiary_interest_rate": 4.0},
+            {"min_project_cost": 750001, "max_project_cost": 1500000, "max_loan_amount": 1350000, "beneficiary_interest_rate": 6.0},
+            {"min_project_cost": 1500001, "max_project_cost": 3000000, "max_loan_amount": 2700000, "beneficiary_interest_rate": 7.0}
+        ],
+        "repayment_years": 10,
+        "moratorium_months": 6,
+        "channel_type": "SCA/CA",
+        "description": "Need-based finance for income-generating activities that help mitigate climate change or support adaptation, such as e-rickshaws, solar energy equipment and poly houses.",
+        "eligible_activities": ["battery electric vehicles/e-rickshaws", "compressed air vehicles", "solar energy gadgets", "poly houses", "other eligible green income-generating activities"],
+        "eligibility": ["Applicant must belong to the Scheduled Caste community", "Scheme-specific and channel-agency eligibility conditions apply"],
+        "notes": "NSFDC documentation sets the eligible unit cost up to ₹30 lakh and assistance up to 90% of unit cost. Detailed interest is tiered by project size."
+    },
+    {
+        "id": "swachhta_udyami",
+        "name": "Swachhta Udyami Yojana (SUY)",
+        "implementing_agency": "National Safai Karamcharis Finance and Development Corporation (NSKFDC)",
+        "scheme_type": "loan",
+        "target_beneficiaries": "Safai Karamcharis, liberated manual scavengers and eligible groups; also supports specified ULBs/private sanitation agencies",
+        "max_project_cost": 1500000,
+        "max_loan_amount": 1500000,
+        "loan_share_percent": None,
+        "interest_rate": 6.0,
+        "interest_rate_details": "For Individual/SHG/JRG/Cooperative target-group projects: 6% p.a. to beneficiary, with 1% rebate for women and 0.5% rebate for timely repayment",
+        "repayment_years": 7,
+        "moratorium_months": 6,
+        "implementation_period_days": 120,
+        "channel_type": "Channelizing Agencies/Banks; ULB-linked implementation",
+        "description": "Financial assistance for procurement and operation of sanitation-related equipment and vehicles, supporting mechanized cleaning and sustainable livelihood opportunities.",
+        "eligible_activities": ["sanitation vehicles", "mechanized sewer/septic-tank cleaning equipment", "waste collection equipment", "sanitation-related equipment"],
+        "eligibility": ["Target-group eligibility under NSKFDC applies", "Individual project ceiling ₹15 lakh; SHG/JRG/Cooperative ceiling ₹50 lakh", "ULB/private-agency components have separate eligibility and interest terms"],
+        "max_project_cost_group": 5000000,
+        "notes": "For the target-group component, the current NSKFDC scheme material specifies up to ₹15 lakh for individuals and ₹50 lakh for SHG/JRG/cooperatives, 7-year repayment and a 120-day implementation period followed by a 180-day moratorium. Separate ULB and private-contractor components have different terms."
+    },
+    {
+        "id": "vcf_sc",
+        "name": "Venture Capital Fund for Scheduled Castes (VCF-SC)",
+        "implementing_agency": "IFCI Venture Capital Funds Limited under the Ministry of Social Justice and Empowerment",
+        "scheme_type": "venture_capital",
+        "target_beneficiaries": "SC entrepreneurs and eligible SC-owned companies/start-ups",
+        "min_assistance_amount": 1000000,
+        "max_assistance_amount": 150000000,
+        "max_project_cost": None,
+        "max_loan_amount": None,
+        "interest_rate": 4.0,
+        "interest_rate_details": "4% p.a. concessional coupon for debt/debenture component; 3.75% for women and Divyang SC entrepreneurs under current reported terms",
+        "repayment_years": 10,
+        "moratorium_months": None,
+        "channel_type": "IFCI Venture Capital Funds Limited",
+        "description": "Concessional venture financing for SC entrepreneurs through debt/debentures and, in specified cases, equity support for innovative technology-oriented businesses and start-ups.",
+        "eligible_activities": ["manufacturing", "services", "allied sectors", "start-ups", "technology-oriented innovative projects"],
+        "eligibility": ["SC entrepreneur/company eligibility applies", "For assistance up to ₹50 lakh, SC entrepreneurs generally need at least 51% shareholding with management control for the prescribed period or qualify under the successor-entity provision", "For assistance above ₹50 lakh, the prescribed SC shareholding/control period is longer", "Documentary proof of SC status is required"],
+        "application_status": "Applications closed from 2026-08-01 according to the official VCF-SC website",
+        "notes": "The current VCF-SC site reports the investment size as ₹10 lakh to ₹15 crore and financial-assistance tenure up to 10 years. Do not present this as a conventional retail loan; it is venture/debt/equity-style financing."
+    },
+    {
+        "id": "sclcss",
+        "name": "Special Credit Linked Capital Subsidy Scheme (SCLCSS)",
+        "implementing_agency": "Ministry of Micro, Small & Medium Enterprises under the National SC-ST Hub",
+        "scheme_type": "capital_subsidy",
+        "target_beneficiaries": "SC/ST-owned Micro and Small Enterprises",
+        "max_project_cost": None,
+        "max_loan_amount": None,
+        "subsidy_rate": 25.0,
+        "max_subsidy_amount": 2500000,
+        "interest_rate": None,
+        "repayment_years": None,
+        "moratorium_months": None,
+        "channel_type": "Prime Lending Institutions (PLIs); SIDBI/NABARD act as nodal agencies for eligible PLIs as specified",
+        "description": "Capital subsidy to SC/ST Micro and Small Enterprises for purchase of eligible new Plant & Machinery/Equipment through institutional term credit, supporting technology upgradation and competitiveness.",
+        "eligible_activities": ["purchase of new plant and machinery", "purchase of eligible equipment", "manufacturing activities", "eligible service activities"],
+        "eligibility": ["Enterprise must be an eligible SC/ST-owned Micro or Small Enterprise", "Manufacturing and eligible service-sector units are covered", "Plant and machinery/equipment must be financed through eligible institutional term credit", "Sole proprietorships, partnerships, cooperatives and societies can be covered subject to scheme conditions"],
+        "notes": "SCLCSS is a subsidy scheme, not a standalone loan product. The official portal states a 25% subsidy on eligible plant & machinery/equipment purchased through institutional credit, capped at ₹25 lakh."
+    }
+]
+
+EDUCATION_SCHEME_ID = "education_loan"
+
+SCHEME_CATALOGUE_BY_ID = {scheme["id"]: scheme for scheme in SCHEME_CATALOGUE}
+
+
+def get_scheme(scheme_id: str) -> dict | None:
+    return SCHEME_CATALOGUE_BY_ID.get(scheme_id)
