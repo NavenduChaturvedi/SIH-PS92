@@ -1,9 +1,13 @@
 {
-  "name": "Scheme Matchmaker",
-  "short_name": "Scheme Match",
+  "name": "Rinuday",
+  "short_name": "Rinuday",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
-  "theme_color": "#4f46e5",
-  "description": "Concessional scheme discovery and channel-partner routing."
+  "theme_color": "#a8c642",
+  "description": "Empowering marginalized communities with effortless loans.",
+  "icons": [
+    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "64x64", "type": "image/png" }
+  ]
 }

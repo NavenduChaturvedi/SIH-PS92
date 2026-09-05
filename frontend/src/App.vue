@@ -3,6 +3,7 @@ import { ref, onBeforeUnmount, computed, watch } from 'vue'
 import axios from 'axios'
 import { ArrowUpRight, Calculator, CircleAlert, Languages, MapPin, Mic, RotateCcw, SlidersHorizontal, Volume2 } from 'lucide-vue-next'
 import { getStaticDemos, getStaticTexts } from './translations'
+import rinudayIcon from './assets/rinuday-icon.png'
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://sih-2026-26092-t2.onrender.com').replace(/\/+$/, '')
 const languages = [
@@ -332,7 +333,7 @@ onBeforeUnmount(() => { stopVoiceCapture(); window.clearInterval(greetingTimer) 
 <template>
   <div class="app-shell">
     <header class="topbar">
-      <a class="brand" href="#top"><span class="brand-mark">J</span><span>JanSamarth <b>Setu</b></span></a>
+      <a class="brand" href="#top"><span class="brand-mark"><img :src="rinudayIcon" alt="" width="20" height="20" /></span><span>Rinuday</span></a>
       <p class="brand-subtitle">{{ uiTexts.brandSubtitle }}</p>
       <div class="header-tools">
         <label class="language-picker">
@@ -344,7 +345,7 @@ onBeforeUnmount(() => { stopVoiceCapture(); window.clearInterval(greetingTimer) 
           </select>
         </label>
         <span class="location"><MapPin :size="15" /> {{ uiTexts.location }}</span>
-        <span class="avatar">JS</span>
+        <span class="avatar">R</span>
       </div>
     </header>
     <main id="top" class="workspace">
